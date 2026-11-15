@@ -1,3 +1,5 @@
+<img src="logo/fluorokit.svg" alt="" width="96" height="96">
+
 # fluorokit
 
 A Metro theme for shadcn-svelte. Add components with the shadcn-svelte CLI as
@@ -164,6 +166,9 @@ To give a shadcn variable a value that no fluorokit color has, put it in the
 mode's `shadcn` object.
 
 ## Credits
+
+The logo (`logo/`) is set in IBM Plex Sans Bold, outlined.
+
 
 The `catppuccin` theme uses colors from [Catppuccin](https://github.com/catppuccin/catppuccin) (MIT).
 
