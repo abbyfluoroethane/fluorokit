@@ -11,6 +11,12 @@ CSS without Svelte.
 The structure is the same in each project: zero radius, a light-weight type
 scale, one left edge. A theme is a palette and a set of fonts.
 
+## Install
+
+```sh
+npm install fluorokit
+```
+
 ## Showcase site
 
 The showcase and the theme builder are in a separate repo,
