@@ -1,6 +1,6 @@
 {
   "name": "fluorokit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Metro theme for shadcn-svelte: tokens, themes and base CSS, plus tiles, a pivot and a theme CLI.",
   "keywords": [
     "shadcn-svelte",
