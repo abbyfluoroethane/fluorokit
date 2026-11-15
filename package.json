@@ -67,6 +67,6 @@
     }
   },
   "bin": {
-    "fluorokit": "./bin/fluorokit.mjs"
+    "fluorokit": "bin/fluorokit.mjs"
   }
 }
