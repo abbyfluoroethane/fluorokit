@@ -1,0 +1,51 @@
+{
+  "space": {
+    "space-1": "4px",
+    "space-2": "8px",
+    "space-3": "12px",
+    "space-4": "16px",
+    "space-6": "24px",
+    "space-8": "32px",
+    "space-12": "48px",
+    "space-16": "64px",
+    "page-margin": "120px"
+  },
+  "shape": {
+    "radius": "0",
+    "tile-1": "152px",
+    "tile-2": "312px",
+    "tile-gap": "var(--fk-space-2)",
+    "bar-edge": "6px",
+    "bar-field": "12px",
+    "touch-target": "40px"
+  },
+  "type": {
+    "hero-size": "clamp(3.5rem, 11vw, 6rem)",
+    "hero-leading": "0.917",
+    "title-size": "clamp(2.5rem, 6vw, 3.5rem)",
+    "title-leading": "1.071",
+    "heading-size": "1.5rem",
+    "heading-leading": "1.333",
+    "subheading-size": "1.125rem",
+    "subheading-leading": "1.333",
+    "body-size": "1rem",
+    "body-leading": "1.5",
+    "small-size": "0.875rem",
+    "small-leading": "1.429",
+    "label-size": "0.75rem",
+    "label-leading": "1.333",
+    "overline-size": "0.75rem",
+    "overline-leading": "1.333",
+    "data-size": "0.875rem",
+    "data-leading": "1.429",
+    "pivot-size": "2.6rem",
+    "pivot-leading": "1",
+    "subpivot-size": "1.15rem"
+  },
+  "motion": {
+    "ease-metro": "cubic-bezier(0.1, 0.9, 0.2, 1)",
+    "enter-offset": "80px",
+    "enter-duration": "0.7s",
+    "enter-stagger": "60ms"
+  }
+}

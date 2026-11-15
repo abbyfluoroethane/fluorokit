@@ -1,0 +1,61 @@
+{
+  "name": "fluorokit",
+  "version": "0.1.0",
+  "description": "Shared Metro-style design system: tokens, themes and base CSS, with a bridge to shadcn variable names.",
+  "license": "MIT",
+  "author": "Abby Bigaouette",
+  "homepage": "https://bigaouette.com/fluorokit-site/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abbyfluoroethane/fluorokit.git"
+  },
+  "type": "module",
+  "files": [
+    "bin",
+    "dist",
+    "tokens",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    "./structure.css": "./dist/structure.css",
+    "./base.css": "./dist/base.css",
+    "./tailwind.css": "./dist/tailwind.css",
+    "./themes/*": "./dist/themes/*",
+    "./themes.json": "./dist/themes.json",
+    "./fonts/*": "./dist/fonts/*",
+    "./tools/*": "./dist/tools/*",
+    "./shiki/*": "./dist/shiki/*",
+    "./enter": {
+      "types": "./dist/enter.d.ts",
+      "default": "./dist/enter.js"
+    },
+    "./svelte/*": {
+      "svelte": "./dist/svelte/*",
+      "default": "./dist/svelte/*"
+    },
+    "./tokens/*": "./tokens/*",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepare": "node scripts/build.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "svelte": {
+      "optional": true
+    }
+  },
+  "bin": {
+    "fluorokit": "./bin/fluorokit.mjs"
+  }
+}

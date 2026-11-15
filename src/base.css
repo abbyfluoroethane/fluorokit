@@ -1,0 +1,201 @@
+/* fluorokit base: the classes that make a page Metro and are not
+   components. Needs structure.css and one theme. It sets no element styles
+   and no reset, so it is safe in an app shell and on a document site.
+
+   Rules the CSS cannot enforce:
+   - Radius 0. No shadows.
+   - Light weight only from 24px.
+   - Uppercase only in the overline, set with text-transform.
+   - Muted text only on base, mantle and deep. On raised or hover, use text. */
+
+/* ---- the type scale ---- */
+.fk-hero {
+  font-size: var(--fk-hero-size);
+  font-weight: 300;
+  line-height: var(--fk-hero-leading);
+  letter-spacing: -0.03em;
+}
+.fk-title {
+  font-size: var(--fk-title-size);
+  font-weight: 300;
+  line-height: var(--fk-title-leading);
+  letter-spacing: -0.02em;
+}
+.fk-heading {
+  font-size: var(--fk-heading-size);
+  font-weight: 600;
+  line-height: var(--fk-heading-leading);
+  letter-spacing: -0.01em;
+}
+.fk-subheading {
+  font-size: var(--fk-subheading-size);
+  font-weight: 600;
+  line-height: var(--fk-subheading-leading);
+}
+.fk-small {
+  font-size: var(--fk-small-size);
+  font-weight: 400;
+  line-height: var(--fk-small-leading);
+}
+.fk-label {
+  font-size: var(--fk-label-size);
+  font-weight: 600;
+  line-height: var(--fk-label-leading);
+}
+.fk-overline {
+  font-family: var(--fk-font-mono);
+  font-size: var(--fk-overline-size);
+  font-weight: 500;
+  line-height: var(--fk-overline-leading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+/* Measured values, units, IDs, hostnames, dates. */
+.fk-data {
+  font-family: var(--fk-font-mono);
+  font-size: var(--fk-data-size);
+  font-weight: 500;
+  line-height: var(--fk-data-leading);
+  font-variant-numeric: tabular-nums;
+}
+.fk-muted {
+  color: var(--fk-muted);
+}
+
+/* ---- the energy bar: the one gradient ---- */
+.fk-bar {
+  background-image: linear-gradient(90deg, var(--fk-bar-start), var(--fk-bar-end));
+}
+
+/* ---- status: a square plus a label. The label carries the state ---- */
+.fk-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fk-space-2);
+  font-size: var(--fk-label-size);
+  font-weight: 600;
+  line-height: var(--fk-label-leading);
+}
+.fk-status::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: var(--fk-status-color, var(--fk-overlay));
+}
+.fk-status.ok { --fk-status-color: var(--fk-status-ok); }
+.fk-status.warn { --fk-status-color: var(--fk-status-warn); }
+.fk-status.error { --fk-status-color: var(--fk-status-error); }
+.fk-status.info { --fk-status-color: var(--fk-status-info); }
+
+/* ---- pivot: type as navigation ----
+   A row of headers. The selected one is solid, the rest are faint. The
+   markup is a tablist of buttons (svelte/Pivot.svelte writes it), or a nav
+   of links with aria-current="page" on the current one. Write the labels
+   in lowercase by hand. */
+.fk-pivot {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+}
+.fk-pivot > :is([role="tab"], a) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: var(--fk-pivot-size);
+  font-weight: 300;
+  line-height: var(--fk-pivot-leading);
+  letter-spacing: -0.02em;
+  color: var(--fk-overlay);
+  text-decoration: none;
+  transition: color 150ms;
+}
+.fk-pivot.fk-pivot-sub > :is([role="tab"], a) {
+  font-size: var(--fk-subpivot-size);
+  font-weight: 350;
+  line-height: inherit;
+  letter-spacing: normal;
+}
+.fk-pivot > :is([role="tab"], a):hover {
+  color: var(--fk-muted);
+  background: none;
+}
+.fk-pivot > :is([role="tab"][aria-selected="true"], a[aria-current="page"]) {
+  color: var(--fk-text);
+}
+.fk-pivot > [role="tab"]:disabled {
+  color: color-mix(in oklab, var(--fk-overlay) 60%, transparent);
+}
+
+/* ---- tiles: the Start screen ----
+   A grid of flat squares. A tile is a link or a div with its label at the
+   bottom left. data-size is square (the default), wide or large. Set the
+   fill with --fk-tile-color, for example var(--fk-tile-sky). */
+.fk-tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--fk-tile-1));
+  grid-auto-rows: var(--fk-tile-1);
+  grid-auto-flow: dense;
+  gap: var(--fk-tile-gap);
+}
+.fk-tile {
+  --fk-tile-fill: var(--fk-tile-color, var(--fk-tile-pink, var(--fk-accent)));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--fk-space-2) var(--fk-space-3);
+  background: var(--fk-tile-fill);
+  color: var(--fk-tile-text, var(--fk-on-accent));
+  text-decoration: none;
+}
+.fk-tile[data-size="wide"] {
+  grid-column: span 2;
+}
+.fk-tile[data-size="large"] {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+a.fk-tile:hover {
+  background: color-mix(in srgb, var(--fk-tile-fill) 85%, #000);
+}
+
+/* ---- the Metro page-enter ----
+   Fade in while sliding into place. Set --i on siblings (0, 1, 2 ...) to
+   stagger them. --fk-enter-dir is the side: 1 from the right (the default),
+   -1 from the left. A pivot sets it on the root element at each click, so a
+   page comes from the side its header lies on. Set it on a container to
+   override that. */
+@keyframes fk-enter {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--fk-enter-offset) * var(--fk-enter-dir, 1)));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fk-enter {
+  animation: fk-enter var(--fk-enter-duration) var(--fk-ease-metro) backwards;
+  animation-delay: calc(var(--i, 0) * var(--fk-enter-stagger));
+}
+@media (prefers-reduced-motion: reduce) {
+  .fk-enter {
+    animation: none;
+  }
+}
+
+/* ---- utilities ---- */
+.fk-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

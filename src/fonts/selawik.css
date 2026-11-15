@@ -1,0 +1,38 @@
+/* Selawik: Microsoft's open-source metric match for Segoe UI. The files are
+   unchanged (SIL Open Font License 1.1, selawik/LICENSE.txt). The zune theme
+   names it as its sans font. */
+@font-face {
+  font-family: 'Selawik';
+  src: url('./selawik/selawkl.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Selawik';
+  src: url('./selawik/selawksl.woff2') format('woff2');
+  font-weight: 350;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Selawik';
+  src: url('./selawik/selawk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Selawik';
+  src: url('./selawik/selawksb.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Selawik';
+  src: url('./selawik/selawkb.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

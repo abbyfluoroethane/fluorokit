@@ -1,0 +1,92 @@
+{
+  "name": "zune",
+  "description": "Neutral greys with a magenta to orange accent. From squirt: light is the desktop-software look, dark is the device look.",
+  "default": "light",
+  "followSystem": false,
+  "fonts": {
+    "font-sans": "\"Selawik\", \"Segoe UI\", system-ui, sans-serif",
+    "font-serif": "Georgia, serif",
+    "font-mono": "\"IBM Plex Mono\", ui-monospace, monospace"
+  },
+  "modes": {
+    "light": {
+      "colorScheme": "light",
+      "colors": {
+        "base": "oklch(0.975 0 0)",
+        "mantle": "oklch(1 0 0)",
+        "deep": "oklch(0.94 0 0)",
+        "raised": "oklch(0.93 0 0)",
+        "line": "oklch(0.9 0 0)",
+        "overlay": "oklch(0.8 0 0)",
+        "text": "oklch(0.3 0 0)",
+        "muted": "oklch(0.6 0 0)",
+        "accent": "oklch(0.6 0.25 355)",
+        "on-accent": "oklch(1 0 0)",
+        "link-underline": "var(--fk-accent)",
+        "bar-start": "var(--fk-accent)",
+        "bar-end": "oklch(0.74 0.17 55)",
+        "focus": "var(--fk-accent)",
+        "control-border": "oklch(0.88 0 0)",
+        "hover": "oklch(0.94 0 0)",
+        "selection": "oklch(0.6 0.25 355 / 12%)",
+        "disabled": "oklch(0.6 0 0)",
+        "status-error": "oklch(0.58 0.22 27)",
+        "on-error": "oklch(1 0 0)",
+        "status-warn": "oklch(0.74 0.17 55)",
+        "on-warn": "oklch(0.2 0 0)",
+        "status-ok": "oklch(0.7 0.15 150)",
+        "on-ok": "oklch(0.2 0 0)",
+        "status-info": "oklch(0.62 0.13 230)",
+        "on-info": "oklch(1 0 0)",
+        "chart-1": "var(--fk-accent)",
+        "chart-2": "oklch(0.74 0.17 55)",
+        "chart-3": "oklch(0.62 0.13 230)",
+        "chart-4": "oklch(0.7 0.15 150)",
+        "chart-5": "oklch(0.6 0 0)"
+      },
+      "shadcn": {
+        "accent-foreground": "oklch(0.25 0 0)"
+      }
+    },
+    "dark": {
+      "colorScheme": "dark",
+      "colors": {
+        "base": "oklch(0.13 0 0)",
+        "mantle": "oklch(0.17 0 0)",
+        "deep": "oklch(0.2 0 0)",
+        "raised": "oklch(0.22 0 0)",
+        "line": "oklch(1 0 0 / 9%)",
+        "overlay": "oklch(0.38 0 0)",
+        "text": "oklch(0.96 0 0)",
+        "muted": "oklch(0.62 0 0)",
+        "accent": "oklch(0.6 0.25 355)",
+        "on-accent": "oklch(1 0 0)",
+        "link-underline": "var(--fk-accent)",
+        "bar-start": "var(--fk-accent)",
+        "bar-end": "oklch(0.74 0.17 55)",
+        "focus": "var(--fk-accent)",
+        "control-border": "oklch(1 0 0 / 14%)",
+        "hover": "oklch(0.22 0 0)",
+        "selection": "oklch(0.6 0.25 355 / 22%)",
+        "disabled": "oklch(0.62 0 0)",
+        "status-error": "oklch(0.68 0.19 22)",
+        "on-error": "oklch(0.13 0 0)",
+        "status-warn": "oklch(0.74 0.17 55)",
+        "on-warn": "oklch(0.13 0 0)",
+        "status-ok": "oklch(0.7 0.15 150)",
+        "on-ok": "oklch(0.13 0 0)",
+        "status-info": "oklch(0.62 0.13 230)",
+        "on-info": "oklch(1 0 0)",
+        "chart-1": "var(--fk-accent)",
+        "chart-2": "oklch(0.74 0.17 55)",
+        "chart-3": "oklch(0.62 0.13 230)",
+        "chart-4": "oklch(0.7 0.15 150)",
+        "chart-5": "oklch(0.6 0 0)"
+      },
+      "shadcn": {
+        "popover": "oklch(0.19 0 0)",
+        "accent-foreground": "oklch(0.98 0 0)"
+      }
+    }
+  }
+}
