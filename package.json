@@ -4,7 +4,7 @@
   "description": "Shared Metro-style design system: tokens, themes and base CSS, with a bridge to shadcn variable names.",
   "license": "MIT",
   "author": "Abby Bigaouette",
-  "homepage": "https://bigaouette.com/fluorokit-site/",
+  "homepage": "https://fluorokit.bigaouette.com/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/abbyfluoroethane/fluorokit.git"

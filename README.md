@@ -13,7 +13,7 @@ scale, one left edge. A theme is a palette and a set of fonts.
 
 The showcase and the theme builder are in a separate repo,
 [fluorokit-site](https://github.com/abbyfluoroethane/fluorokit-site), live at
-<https://bigaouette.com/fluorokit-site/>.
+<https://fluorokit.bigaouette.com/>.
 
 ## Presets and the command
 
