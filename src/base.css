@@ -181,8 +181,27 @@ a.fk-tile:hover {
   animation: fk-enter var(--fk-enter-duration) var(--fk-ease-metro) backwards;
   animation-delay: calc(var(--i, 0) * var(--fk-enter-stagger));
 }
+/* Page content: put .fk-enter-children on the element that holds it (the
+   <main>), and each direct child enters after the header, with no class of
+   its own. That suits content that cannot take a class, such as Markdown.
+   The first child waits --fk-enter-delay; the second and the rest follow a
+   stagger apart. A tile grid does not move as one block: its tiles enter,
+   and a script can give each row its own animation-delay. */
+.fk-enter-children > :not(.fk-tile-grid),
+.fk-enter-children > .fk-tile-grid > * {
+  animation: fk-enter var(--fk-enter-duration) var(--fk-ease-metro) backwards;
+  animation-delay: calc(var(--fk-enter-delay) + var(--fk-enter-order, 0) * var(--fk-enter-stagger));
+}
+.fk-enter-children > :nth-child(2) {
+  --fk-enter-order: 1;
+}
+.fk-enter-children > :nth-child(n + 3) {
+  --fk-enter-order: 2;
+}
 @media (prefers-reduced-motion: reduce) {
-  .fk-enter {
+  .fk-enter,
+  .fk-enter-children > :not(.fk-tile-grid),
+  .fk-enter-children > .fk-tile-grid > * {
     animation: none;
   }
 }

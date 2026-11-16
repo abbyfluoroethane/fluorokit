@@ -46,6 +46,7 @@
     "ease-metro": "cubic-bezier(0.1, 0.9, 0.2, 1)",
     "enter-offset": "5rem",
     "enter-duration": "0.7s",
-    "enter-stagger": "60ms"
+    "enter-stagger": "60ms",
+    "enter-delay": "120ms"
   }
 }

@@ -120,6 +120,13 @@ Put `.fk-enter` on content that mounts when the page changes. It fades in
 while it slides 80px into place. Set `--i` (0, 1, 2 ...) on siblings to
 stagger them.
 
+For page content, put `.fk-enter-children` on the element that holds it. Each
+direct child then enters after the header, with no class of its own:
+
+```html
+<main class="fk-enter-children">...</main>
+```
+
 The slide is direction-aware by default. `Pivot` sets `--fk-enter-dir` on the
 root element at each click: 1 when the new header is to the right, -1 when it
 is to the left. Thus a page comes from the side its header lies on. This is
