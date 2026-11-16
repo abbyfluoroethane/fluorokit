@@ -1,23 +1,23 @@
 {
   "space": {
-    "space-1": "4px",
-    "space-2": "8px",
-    "space-3": "12px",
-    "space-4": "16px",
-    "space-6": "24px",
-    "space-8": "32px",
-    "space-12": "48px",
-    "space-16": "64px",
-    "page-margin": "120px"
+    "space-1": "0.25rem",
+    "space-2": "0.5rem",
+    "space-3": "0.75rem",
+    "space-4": "1rem",
+    "space-6": "1.5rem",
+    "space-8": "2rem",
+    "space-12": "3rem",
+    "space-16": "4rem",
+    "page-margin": "7.5rem"
   },
   "shape": {
     "radius": "0",
-    "tile-1": "152px",
-    "tile-2": "312px",
+    "tile-1": "9.5rem",
+    "tile-2": "19.5rem",
     "tile-gap": "var(--fk-space-2)",
-    "bar-edge": "6px",
-    "bar-field": "12px",
-    "touch-target": "40px"
+    "bar-edge": "0.375rem",
+    "bar-field": "0.75rem",
+    "touch-target": "2.5rem"
   },
   "type": {
     "hero-size": "clamp(3.5rem, 11vw, 6rem)",
@@ -44,7 +44,7 @@
   },
   "motion": {
     "ease-metro": "cubic-bezier(0.1, 0.9, 0.2, 1)",
-    "enter-offset": "80px",
+    "enter-offset": "5rem",
     "enter-duration": "0.7s",
     "enter-stagger": "60ms"
   }

@@ -1,6 +1,6 @@
 // Builds dist/ from tokens/ and src/.
 //
-//   dist/structure.css             spacing, shape, type scale and motion (--fk-*)
+//   dist/structure.css             spacing, shape, type scale and motion (--fk-*), in rem, and the root-size presets
 //   dist/themes.json               every theme, as one list
 //   dist/themes/<name>.css         one theme: colors and fonts (--fk-*)
 //   dist/themes/<name>.shadcn.css  the same, plus the shadcn variable names
@@ -45,10 +45,13 @@ mkdirSync(new URL('dist/themes/', root), { recursive: true });
 mkdirSync(new URL('dist/shiki/', root), { recursive: true });
 
 const structure = read('tokens/structure.json');
+// The tokens, then the root-size presets (src/sizes.css), which do nothing
+// unless the root element has data-fk-size.
 write(
   'dist/structure.css',
-  banner('spacing, shape, type scale and motion') +
-    `:root {\n${Object.values(structure).map((group) => decls(group, '  ')).join('\n')}}\n`,
+  banner('spacing, shape, type scale, motion and root sizes') +
+    `:root {\n${Object.values(structure).map((group) => decls(group, '  ')).join('\n')}}\n` +
+    readFileSync(new URL('src/sizes.css', root), 'utf8'),
 );
 
 const themeFiles = readdirSync(new URL('tokens/themes/', root)).filter((f) => f.endsWith('.json'));

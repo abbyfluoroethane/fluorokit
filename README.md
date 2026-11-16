@@ -91,6 +91,29 @@ License 1.1):
 IBM Plex is not included. For a theme that names it, the project supplies
 the `@font-face` rules, from `@fontsource/ibm-plex-sans` for example.
 
+## Sizes
+
+Every size in the kit is in rem: type, spacing, tiles, the page margin and
+motion. So the root font size sets the scale of the whole page. The kit
+sets no root size of its own; with no attribute, `1rem` is the browser's
+size (16px unless the reader changed it).
+
+For another scale, put a preset on the root element:
+
+```html
+<html data-fk-size="compact">
+```
+
+| Preset | Root size | For |
+| --- | --- | --- |
+| none | browser default (16px) | most sites |
+| `compact` | 81.25% (13px) | dense desktop apps |
+| `large` | 112.5% (18px) | reading pages, kiosks, a television |
+| `wide` | 16px, then 110%, 120% and 130% from 1500, 1800 and 2200px wide | sites that should use more of a big screen |
+
+The presets are percentages of the browser's size, so a reader who set a
+larger default still gets a larger page.
+
 ## Page-enter and pivots
 
 Put `.fk-enter` on content that mounts when the page changes. It fades in

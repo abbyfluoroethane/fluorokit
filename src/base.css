@@ -4,7 +4,7 @@
 
    Rules the CSS cannot enforce:
    - Radius 0. No shadows.
-   - Light weight only from 24px.
+   - Light weight only from 1.5rem (24px at the default size).
    - Uppercase only in the overline, set with text-transform.
    - Muted text only on base, mantle and deep. On raised or hover, use text. */
 
@@ -79,8 +79,8 @@
 .fk-status::before {
   content: "";
   flex: none;
-  width: 8px;
-  height: 8px;
+  width: 0.5rem;
+  height: 0.5rem;
   background: var(--fk-status-color, var(--fk-overlay));
 }
 .fk-status.ok { --fk-status-color: var(--fk-status-ok); }
