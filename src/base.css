@@ -308,13 +308,30 @@ a.fk-tile:hover {
   margin-top: calc(var(--fk-bleed-crop) * -1);
 }
 
+/* ---- the page gutter: reach the edge of the screen ----
+   --fk-page-gutter is the space between the left edge of the screen and
+   the content, --fk-page-gutter-end the space on the right. Set the page
+   padding from them (padding-inline: var(--fk-page-gutter)
+   var(--fk-page-gutter-end)), or set them to the padding the page has.
+   .fk-full-bleed then pulls an element out to both screen edges, and
+   .fk-bleed-end to the right edge only. */
+.fk-full-bleed {
+  margin-inline: calc(var(--fk-page-gutter) * -1) calc(var(--fk-page-gutter-end) * -1);
+}
+.fk-bleed-end {
+  margin-inline-end: calc(var(--fk-page-gutter-end) * -1);
+}
+
 /* ---- panorama: one wide canvas, three speeds ----
    The sections scroll at the speed of the finger. The title moves slower
    (--fk-panorama-title-rate) and the background a little faster than the
    title (--fk-panorama-bg-rate), so the layers part as they move.
    attachPanorama() in fluorokit/motion sets --fk-pan, the scroll offset in
    px. The title is a .fk-bleed word: it runs off the right edge and comes
-   into view as you pan.
+   into view as you pan, and it leaves past the left edge of the screen.
+   The panorama spans the screen, from edge to edge: it pulls itself out
+   by the page gutter, then puts the title and the sections back on the
+   left edge of the content.
      <div class="fk-panorama">
        <div class="fk-panorama-bg"></div>          (optional)
        <p class="fk-panorama-title fk-bleed">music</p>
@@ -325,6 +342,7 @@ a.fk-tile:hover {
 .fk-panorama {
   position: relative;
   min-width: 0;
+  margin-inline: calc(var(--fk-page-gutter) * -1) calc(var(--fk-page-gutter-end) * -1);
   overflow: hidden;
   overflow: clip;
 }
@@ -339,6 +357,7 @@ a.fk-tile:hover {
 .fk-panorama-title {
   position: relative;
   z-index: 1;
+  padding-inline-start: var(--fk-page-gutter);
   transform: translateX(calc(var(--fk-pan, 0) * var(--fk-panorama-title-rate) * -1px));
   pointer-events: none;
 }
@@ -350,6 +369,8 @@ a.fk-tile:hover {
   grid-auto-columns: min(85%, 26rem);
   gap: var(--fk-space-8);
   overflow-x: auto;
+  padding-inline: var(--fk-page-gutter) 20%;
+  scroll-padding-inline-start: var(--fk-page-gutter);
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   overscroll-behavior-x: contain;

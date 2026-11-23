@@ -213,6 +213,20 @@ finger, the background slower and the title slowest. Call
 `attachPanorama(el)` on the `.fk-panorama` element. The markup is in the
 comment above `.fk-panorama` in `base.css`.
 
+**The page gutter.** The panorama spans the screen from edge to edge, so
+the kit must know the page padding. `--fk-page-gutter` is the left padding
+and `--fk-page-gutter-end` the right. The default is the page margin, down
+to 1rem on a narrow screen. Use the tokens for the page padding, or set
+them to the padding the page has:
+
+```css
+main { padding-inline: var(--fk-page-gutter) var(--fk-page-gutter-end); }
+```
+
+`.fk-full-bleed` pulls any element out to both screen edges, and
+`.fk-bleed-end` to the right edge only. Both reach the screen edge only
+when no ancestor between the element and the padded box has a max-width.
+
 With `prefers-reduced-motion`, the exit and the turnstile do not animate,
 tilt dims the element instead of moving it, and the panorama layers stay
 still.

@@ -8,7 +8,9 @@
     "space-8": "2rem",
     "space-12": "3rem",
     "space-16": "4rem",
-    "page-margin": "7.5rem"
+    "page-margin": "7.5rem",
+    "page-gutter": "max(1rem, min(var(--fk-page-margin), 6vw))",
+    "page-gutter-end": "var(--fk-page-gutter)"
   },
   "shape": {
     "radius": "0",
