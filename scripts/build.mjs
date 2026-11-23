@@ -11,7 +11,7 @@
 //   dist/fonts/selawik.css         the Selawik font, for the zune theme
 //   dist/tools/                    the theme recipe and the CSS writer, as modules
 //   dist/enter.js                  setEnterDirection, for a direction-aware page-enter
-//   dist/motion.js                 leave, attachTilt, attachPanorama: the page-exit, tilt and the panorama
+//   dist/motion.js                 leave, continuum, attachTilt, attachPanorama
 //   dist/svelte/                   Svelte 5 components (Pivot)
 //
 // Every fluorokit variable has the --fk- prefix. The shadcn names (--muted,

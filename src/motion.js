@@ -1,4 +1,5 @@
-// Metro motion that needs a script: the page-exit, tilt and the panorama.
+// Metro motion that needs a script: the page-exit, continuum, tilt and the
+// panorama.
 // The styles are in fluorokit/base.css. Each function does nothing on the
 // server (no document), so it is safe to import in SSR code.
 
@@ -27,6 +28,64 @@ export async function leave(el, { kind = 'slide', children = false } = {}) {
     t.classList.add(cls);
   });
   const running = targets.flatMap((t) => (typeof t.getAnimations === 'function' ? t.getAnimations() : []));
+  await Promise.all(running.map((a) => a.finished.catch(() => {})));
+}
+
+/**
+ * Continuum: the rest of `page` leaves, then `item` flies out, down and to
+ * the right. Call it in the click handler of a list item, before the
+ * change to the next page. On the next page, put .fk-continuum-in on the
+ * header, or call continuumIn().
+ *
+ * "The rest of the page" is every sibling of the item, then every sibling
+ * of its parent, and so on up to `page`. They leave top to bottom, a
+ * stagger apart. The item waits --fk-continuum-delay, then flies.
+ *
+ * For the way back, set --fk-enter-dir to -1 first (setEnterDirection, or
+ * by hand). The arc then runs backwards: up and to the left.
+ *
+ * @param {Element | null | undefined} item the tapped element, or the part of it that flies (its title)
+ * @param {{ page?: Element | null, kind?: 'slide' | 'turnstile' }} [options] `page`: the element that holds the page (default: the parent of the item). `kind`: how the rest leaves.
+ * @returns {Promise<void>} resolves when every animation ends, or at once with reduced motion
+ */
+export async function continuum(item, { page, kind = 'slide' } = {}) {
+  if (!item || typeof document === 'undefined') return;
+  const root = page && page.contains(item) ? page : item.parentElement;
+  const rest = [];
+  for (let node = item; node && node !== root && node.parentElement; node = node.parentElement) {
+    for (const sibling of node.parentElement.children) if (sibling !== node) rest.push(sibling);
+    if (node.parentElement === root) break;
+  }
+  // Top to bottom, as the eye reads the page.
+  const tops = new Map(rest.map((el) => [el, el.getBoundingClientRect().top]));
+  rest.sort((a, b) => tops.get(a) - tops.get(b));
+  const cls = kind === 'turnstile' ? 'fk-turnstile-out' : 'fk-exit';
+  rest.forEach((el, i) => {
+    if (el instanceof HTMLElement) el.style.setProperty('--i', String(Math.min(i, 8)));
+    el.classList.remove('fk-turnstile-in', 'fk-enter', 'fk-continuum-in');
+    el.classList.add(cls);
+  });
+  // A transform does not move an inline box.
+  if (item instanceof HTMLElement && getComputedStyle(item).display === 'inline') item.style.display = 'inline-block';
+  if (item instanceof HTMLElement) item.style.setProperty('--fk-continuum-wait', String(Math.min(rest.length - 1, 8)));
+  item.classList.remove('fk-continuum-in', 'fk-enter');
+  item.classList.add('fk-continuum-out');
+  const running = [item, ...rest].flatMap((el) => (typeof el.getAnimations === 'function' ? el.getAnimations() : []));
+  await Promise.all(running.map((a) => a.finished.catch(() => {})));
+}
+
+/**
+ * Fly the header of the new page in, on the arc that continuum() started.
+ * The same as adding .fk-continuum-in by hand, but it waits for the end.
+ *
+ * @param {Element | null | undefined} el the header of the new page
+ * @returns {Promise<void>}
+ */
+export async function continuumIn(el) {
+  if (!el || typeof document === 'undefined') return;
+  if (el instanceof HTMLElement && getComputedStyle(el).display === 'inline') el.style.display = 'inline-block';
+  el.classList.add('fk-continuum-in');
+  const running = typeof el.getAnimations === 'function' ? el.getAnimations() : [];
   await Promise.all(running.map((a) => a.finished.catch(() => {})));
 }
 

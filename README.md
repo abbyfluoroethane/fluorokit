@@ -53,7 +53,7 @@ npm run build
 | `dist/fonts/selawik.css` | The Selawik font, for the `zune` theme |
 | `dist/tools/` | The theme recipe (`fluoro.mjs`), the presets (`presets.mjs`) and the CSS writer (`theme-css.mjs`), as modules for the browser or Node |
 | `dist/enter.js` | `setEnterDirection`, for a direction-aware page-enter |
-| `dist/motion.js` | `leave`, `attachTilt`, `attachPanorama`: the page-exit, tilt and the panorama |
+| `dist/motion.js` | `leave`, `continuum`, `continuumIn`, `attachTilt`, `attachPanorama` |
 | `dist/svelte/` | Svelte 5 components: `Pivot` |
 
 Every fluorokit variable and class has the `fk` prefix (`--fk-base`,
@@ -165,7 +165,7 @@ A section further right comes from the right, and one further left from the
 left. In one section, a deeper page comes from the right and the way back
 from the left.
 
-## Page-exit, tilt and bleed type
+## Page-exit, continuum, tilt and bleed type
 
 These need `fluorokit/motion` for the script parts. The styles are in
 `base.css`.
@@ -194,6 +194,23 @@ bottom. `Pivot` does this for you: give it the page element as `leaving`.
   <section class="fk-enter" bind:this={pageEl}>...</section>
 {/key}
 ```
+
+**Continuum.** The tapped item carries you to the next page. The rest of
+the page leaves, top to bottom, then the item flies out, down and to the
+right. On the next page, the header flies in from up and to the left, on
+the same arc:
+
+```js
+import { continuum } from 'fluorokit/motion';
+
+await continuum(item.querySelector('.title'), { page: listEl, kind: 'slide' });
+open(item); // the new page puts .fk-continuum-in on its header
+```
+
+"The rest of the page" is each sibling of the item, then each sibling of
+its parent, up to `page`. For the way back, set `--fk-enter-dir` to -1
+first, and the arc runs in reverse. `continuumIn(el)` adds
+`.fk-continuum-in` and waits for the end.
 
 **Tilt.** Put `.fk-tilt` on a tile or a button and call `attachTilt()` once.
 A pressed element tips toward the press point and sinks when the press is
@@ -227,7 +244,7 @@ main { padding-inline: var(--fk-page-gutter) var(--fk-page-gutter-end); }
 `.fk-bleed-end` to the right edge only. Both reach the screen edge only
 when no ancestor between the element and the padded box has a max-width.
 
-With `prefers-reduced-motion`, the exit and the turnstile do not animate,
+With `prefers-reduced-motion`, the exit, the turnstile and continuum do not animate,
 tilt dims the element instead of moving it, and the panorama layers stay
 still.
 
