@@ -41,6 +41,10 @@
       "types": "./dist/enter.d.ts",
       "default": "./dist/enter.js"
     },
+    "./motion": {
+      "types": "./dist/motion.d.ts",
+      "default": "./dist/motion.js"
+    },
     "./svelte/*": {
       "svelte": "./dist/svelte/*",
       "default": "./dist/svelte/*"

@@ -206,6 +206,184 @@ a.fk-tile:hover {
   }
 }
 
+/* ---- the Metro page-exit ----
+   The old page leaves before the new page enters. .fk-exit fades out and
+   slides a short way to the side away from the new page: to the left when
+   --fk-enter-dir is 1, to the right when it is -1. It is faster than the
+   enter and uses an ease-in, so the old page gets out of the way.
+   .fk-turnstile-out swings the element shut on its left edge, and
+   .fk-turnstile-in swings it open. Set --i on siblings to stagger them, top
+   to bottom. leave() in fluorokit/motion adds the class and waits for the
+   animation to end. The element stays hidden at the end: remount it or
+   remove the class. */
+@keyframes fk-exit {
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--fk-exit-offset) * var(--fk-enter-dir, 1) * -1));
+  }
+}
+.fk-exit,
+/* :is() takes its strongest selector, so an exit also wins over the enter
+   rules of .fk-enter-children. */
+:is(.fk-enter-children > .fk-exit, .fk-enter-children > * > .fk-exit) {
+  animation: fk-exit var(--fk-exit-duration) var(--fk-ease-exit) forwards;
+  animation-delay: calc(var(--i, 0) * var(--fk-exit-stagger));
+  pointer-events: none;
+}
+@keyframes fk-turnstile-out {
+  to {
+    opacity: 0;
+    transform: perspective(var(--fk-turnstile-perspective))
+      rotateY(calc(var(--fk-turnstile-angle) * var(--fk-enter-dir, 1) * -1));
+  }
+}
+@keyframes fk-turnstile-in {
+  from {
+    opacity: 0;
+    transform: perspective(var(--fk-turnstile-perspective))
+      rotateY(calc(var(--fk-turnstile-angle) * var(--fk-enter-dir, 1)));
+  }
+}
+.fk-turnstile-out,
+.fk-turnstile-in {
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+.fk-turnstile-out,
+:is(.fk-enter-children > .fk-turnstile-out, .fk-enter-children > * > .fk-turnstile-out) {
+  animation: fk-turnstile-out var(--fk-turnstile-duration) var(--fk-ease-exit) forwards;
+  animation-delay: calc(var(--i, 0) * var(--fk-exit-stagger));
+  pointer-events: none;
+}
+.fk-turnstile-in {
+  animation: fk-turnstile-in var(--fk-turnstile-duration) var(--fk-ease-metro) backwards;
+  animation-delay: calc(var(--i, 0) * var(--fk-exit-stagger));
+}
+
+/* ---- tilt: press feedback ----
+   A pressed element tips toward the finger, and sinks when the press is
+   near its center. attachTilt() in fluorokit/motion sets --fk-tilt-x and
+   --fk-tilt-y (-1 to 1, the press point from the center) and --fk-tilt-sink
+   (0 at an edge, 1 at the center) and adds .fk-tilting while the pointer is
+   down. Without the script, :active gives a flat press. */
+.fk-tilt {
+  transition: transform var(--fk-tilt-release) var(--fk-ease-metro);
+}
+.fk-tilt:active:not(.fk-tilting) {
+  transform: scale(0.97);
+  transition-duration: var(--fk-tilt-press);
+}
+.fk-tilt.fk-tilting {
+  transform: perspective(var(--fk-tilt-perspective))
+    rotateX(calc(var(--fk-tilt-y, 0) * var(--fk-tilt-angle) * -1))
+    rotateY(calc(var(--fk-tilt-x, 0) * var(--fk-tilt-angle)))
+    translateZ(calc(var(--fk-tilt-sink, 0) * var(--fk-tilt-depth) * -1));
+  transition-duration: var(--fk-tilt-press);
+}
+
+/* ---- bleed type: a title too big for the screen ----
+   A word at a size that runs off the edge, as on the Zune HD and the WP7
+   panorama. Put .fk-bleed in a .fk-bleed-frame: the frame clips the word,
+   so the page does not scroll sideways. data-crop="top" also cuts the top
+   of the letters at the frame edge. Use one bleed word on a page, and keep
+   the same word in an accessible form (the frame label, or the text
+   itself, which a screen reader reads in full). */
+.fk-bleed-frame {
+  /* overflow: clip does not make a scroll container, so a grid or flex
+     parent would size the frame to the whole word without min-width: 0. */
+  min-width: 0;
+  overflow: hidden;
+  overflow: clip;
+}
+.fk-bleed {
+  display: block;
+  margin: 0;
+  font-size: var(--fk-bleed-size);
+  font-weight: 300;
+  line-height: var(--fk-bleed-leading);
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.fk-bleed[data-crop="top"] {
+  margin-top: calc(var(--fk-bleed-crop) * -1);
+}
+
+/* ---- panorama: one wide canvas, three speeds ----
+   The sections scroll at the speed of the finger. The title moves slower
+   (--fk-panorama-title-rate) and the background a little faster than the
+   title (--fk-panorama-bg-rate), so the layers part as they move.
+   attachPanorama() in fluorokit/motion sets --fk-pan, the scroll offset in
+   px. The title is a .fk-bleed word: it runs off the right edge and comes
+   into view as you pan.
+     <div class="fk-panorama">
+       <div class="fk-panorama-bg"></div>          (optional)
+       <p class="fk-panorama-title fk-bleed">music</p>
+       <div class="fk-panorama-track">
+         <section class="fk-panorama-section">...</section>
+       </div>
+     </div> */
+.fk-panorama {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  overflow: clip;
+}
+.fk-panorama-bg {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 200%;
+  z-index: 0;
+  transform: translateX(calc(var(--fk-pan, 0) * var(--fk-panorama-bg-rate) * -1px));
+  pointer-events: none;
+}
+.fk-panorama-title {
+  position: relative;
+  z-index: 1;
+  transform: translateX(calc(var(--fk-pan, 0) * var(--fk-panorama-title-rate) * -1px));
+  pointer-events: none;
+}
+.fk-panorama-track {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(85%, 26rem);
+  gap: var(--fk-space-8);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.fk-panorama-track::-webkit-scrollbar {
+  display: none;
+}
+.fk-panorama-section {
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fk-exit,
+  .fk-turnstile-out,
+  .fk-turnstile-in,
+  :is(.fk-enter-children > *, .fk-enter-children > * > *):is(.fk-exit, .fk-turnstile-out) {
+    animation: none;
+  }
+  .fk-exit,
+  .fk-turnstile-out {
+    opacity: 0;
+  }
+  .fk-tilt.fk-tilting,
+  .fk-tilt:active:not(.fk-tilting) {
+    transform: none;
+    opacity: 0.8;
+  }
+  .fk-panorama-bg,
+  .fk-panorama-title {
+    transform: none;
+  }
+}
+
 /* ---- utilities ---- */
 .fk-sr-only {
   position: absolute;

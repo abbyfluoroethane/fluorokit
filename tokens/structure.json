@@ -40,13 +40,30 @@
     "data-leading": "1.429",
     "pivot-size": "2rem",
     "pivot-leading": "1",
-    "subpivot-size": "1.15rem"
+    "subpivot-size": "1.15rem",
+    "bleed-size": "clamp(5rem, 24vw, 24rem)",
+    "bleed-leading": "0.8",
+    "bleed-crop": "0.3em"
   },
   "motion": {
     "ease-metro": "cubic-bezier(0.1, 0.9, 0.2, 1)",
     "enter-offset": "5rem",
     "enter-duration": "0.7s",
     "enter-stagger": "60ms",
-    "enter-delay": "120ms"
+    "enter-delay": "120ms",
+    "exit-offset": "2.5rem",
+    "exit-duration": "0.2s",
+    "exit-stagger": "30ms",
+    "ease-exit": "cubic-bezier(0.7, 0, 1, 0.5)",
+    "turnstile-angle": "80deg",
+    "turnstile-perspective": "75rem",
+    "turnstile-duration": "0.35s",
+    "tilt-angle": "17deg",
+    "tilt-depth": "1.5rem",
+    "tilt-perspective": "50rem",
+    "tilt-press": "80ms",
+    "tilt-release": "0.25s",
+    "panorama-title-rate": "0.3",
+    "panorama-bg-rate": "0.5"
   }
 }

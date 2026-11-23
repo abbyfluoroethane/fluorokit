@@ -6,14 +6,20 @@
 	// A click points the next page-enter at the side the new item lies on, so
 	// content with .fk-enter slides in from that side. The styles are in
 	// fluorokit/base.css.
+	//
+	// Give `leaving` the element that holds the current page, and the old page
+	// leaves first (`exit`: slide or turnstile), then `value` changes.
 	import { setEnterDirection } from '../enter.js';
+	import { leave } from '../motion.js';
 
 	let {
 		items,
 		value = $bindable(),
 		size = 'pivot',
 		disabled = [],
-		scope = null
+		scope = null,
+		leaving = null,
+		exit = 'slide'
 	}: {
 		items: readonly T[];
 		value: T;
@@ -21,11 +27,22 @@
 		disabled?: readonly T[];
 		/** The element that holds the entering content. Default: the root element. */
 		scope?: HTMLElement | null;
+		/** The element that holds the current page. It plays the exit before the change. */
+		leaving?: HTMLElement | null;
+		exit?: 'slide' | 'turnstile';
 	} = $props();
 
-	function select(item: T) {
-		if (item === value) return;
+	// True while the old page plays its exit. A click in that time does nothing.
+	let busy = false;
+
+	async function select(item: T) {
+		if (item === value || busy) return;
 		setEnterDirection(items, value, item, scope);
+		if (leaving) {
+			busy = true;
+			await leave(leaving, { kind: exit });
+			busy = false;
+		}
 		value = item;
 	}
 </script>

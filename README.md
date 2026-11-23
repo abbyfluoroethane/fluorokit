@@ -53,6 +53,7 @@ npm run build
 | `dist/fonts/selawik.css` | The Selawik font, for the `zune` theme |
 | `dist/tools/` | The theme recipe (`fluoro.mjs`), the presets (`presets.mjs`) and the CSS writer (`theme-css.mjs`), as modules for the browser or Node |
 | `dist/enter.js` | `setEnterDirection`, for a direction-aware page-enter |
+| `dist/motion.js` | `leave`, `attachTilt`, `attachPanorama`: the page-exit, tilt and the panorama |
 | `dist/svelte/` | Svelte 5 components: `Pivot` |
 
 Every fluorokit variable and class has the `fk` prefix (`--fk-base`,
@@ -163,6 +164,58 @@ import { enterDirectionScript } from 'fluorokit/enter';
 A section further right comes from the right, and one further left from the
 left. In one section, a deeper page comes from the right and the way back
 from the left.
+
+## Page-exit, tilt and bleed type
+
+These need `fluorokit/motion` for the script parts. The styles are in
+`base.css`.
+
+**Page-exit.** The old page leaves before the new page enters. `.fk-exit`
+fades out and slides away from the side the new page comes from. It is
+faster than the enter and uses an ease-in. `.fk-turnstile-out` and
+`.fk-turnstile-in` swing the element on its left edge. `leave(el)` adds the
+class and resolves when the animation ends:
+
+```js
+import { setEnterDirection } from 'fluorokit/enter';
+import { leave } from 'fluorokit/motion';
+
+setEnterDirection(pages, current, next);
+await leave(pageEl, { kind: 'turnstile', children: true });
+current = next; // remount the page: the old element stays hidden
+```
+
+With `children: true`, each direct child leaves a stagger apart, top to
+bottom. `Pivot` does this for you: give it the page element as `leaving`.
+
+```svelte
+<Pivot items={pages} bind:value={page} leaving={pageEl} exit="slide" />
+{#key page}
+  <section class="fk-enter" bind:this={pageEl}>...</section>
+{/key}
+```
+
+**Tilt.** Put `.fk-tilt` on a tile or a button and call `attachTilt()` once.
+A pressed element tips toward the press point and sinks when the press is
+near its center. It follows the pointer while it is down, and lets go when
+the pointer leaves it. Without the script, `:active` gives a flat press.
+
+**Bleed type.** `.fk-bleed` sets one word at `--fk-bleed-size`, too big for
+the screen. Put it in a `.fk-bleed-frame`, which clips it, so the page does
+not scroll sideways. `data-crop="top"` also cuts the top of the letters.
+
+```html
+<div class="fk-bleed-frame"><h1 class="fk-bleed" data-crop="top">marketplace</h1></div>
+```
+
+**Panorama.** A wide canvas in three layers: the sections move with the
+finger, the background slower and the title slowest. Call
+`attachPanorama(el)` on the `.fk-panorama` element. The markup is in the
+comment above `.fk-panorama` in `base.css`.
+
+With `prefers-reduced-motion`, the exit and the turnstile do not animate,
+tilt dims the element instead of moving it, and the panorama layers stay
+still.
 
 ## Themes
 
