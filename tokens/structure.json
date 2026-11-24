@@ -67,9 +67,7 @@
     "tilt-release": "0.25s",
     "panorama-title-rate": "0.3",
     "panorama-bg-rate": "0.5",
-    "continuum-x": "3rem",
-    "continuum-y": "4.5rem",
-    "continuum-duration": "0.3s",
-    "continuum-delay": "0.1s"
+    "continuum-duration": "0.55s",
+    "continuum-offset": "3rem"
   }
 }

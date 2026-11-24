@@ -31,22 +31,25 @@ export async function leave(el, { kind = 'slide', children = false } = {}) {
   await Promise.all(running.map((a) => a.finished.catch(() => {})));
 }
 
+// Where the last continuum() item was: read by continuumIn().
+let flight = null;
+
 /**
- * Continuum: the rest of `page` leaves, then `item` flies out, down and to
- * the right. Call it in the click handler of a list item, before the
- * change to the next page. On the next page, put .fk-continuum-in on the
- * header, or call continuumIn().
+ * Continuum, first half: the rest of `page` leaves, and `item` stays where
+ * it is. Call it in the click handler of a list item, before the change to
+ * the next page. Then mount the next page and call continuumIn() on its
+ * header: the header starts where the item was and moves into place.
  *
  * "The rest of the page" is every sibling of the item, then every sibling
- * of its parent, and so on up to `page`. They leave top to bottom, a
- * stagger apart. The item waits --fk-continuum-delay, then flies.
+ * of its parent, and so on up to `page`. They leave top to bottom, a short
+ * stagger apart.
  *
- * For the way back, set --fk-enter-dir to -1 first (setEnterDirection, or
- * by hand). The arc then runs backwards: up and to the left.
+ * The way back is the same call the other way round: continuum() on the
+ * header, then continuumIn() on the list item.
  *
- * @param {Element | null | undefined} item the tapped element, or the part of it that flies (its title)
+ * @param {Element | null | undefined} item the tapped element, or the part of it that moves (its title)
  * @param {{ page?: Element | null, kind?: 'slide' | 'turnstile' }} [options] `page`: the element that holds the page (default: the parent of the item). `kind`: how the rest leaves.
- * @returns {Promise<void>} resolves when every animation ends, or at once with reduced motion
+ * @returns {Promise<void>} resolves when the rest of the page is gone, or at once with reduced motion
  */
 export async function continuum(item, { page, kind = 'slide' } = {}) {
   if (!item || typeof document === 'undefined') return;
@@ -61,29 +64,44 @@ export async function continuum(item, { page, kind = 'slide' } = {}) {
   rest.sort((a, b) => tops.get(a) - tops.get(b));
   const cls = kind === 'turnstile' ? 'fk-turnstile-out' : 'fk-exit';
   rest.forEach((el, i) => {
-    if (el instanceof HTMLElement) el.style.setProperty('--i', String(Math.min(i, 8)));
+    // A short stagger: the item waits for the rest to leave.
+    if (el instanceof HTMLElement) el.style.setProperty('--i', String(Math.min(i, 2)));
     el.classList.remove('fk-turnstile-in', 'fk-enter', 'fk-continuum-in');
     el.classList.add(cls);
   });
-  // A transform does not move an inline box.
-  if (item instanceof HTMLElement && getComputedStyle(item).display === 'inline') item.style.display = 'inline-block';
-  if (item instanceof HTMLElement) item.style.setProperty('--fk-continuum-wait', String(Math.min(rest.length - 1, 8)));
-  item.classList.remove('fk-continuum-in', 'fk-enter');
-  item.classList.add('fk-continuum-out');
-  const running = [item, ...rest].flatMap((el) => (typeof el.getAnimations === 'function' ? el.getAnimations() : []));
+  const r = item.getBoundingClientRect();
+  flight = { left: r.left, top: r.top, fontSize: parseFloat(getComputedStyle(item).fontSize), at: performance.now() };
+  const running = rest.flatMap((el) => (typeof el.getAnimations === 'function' ? el.getAnimations() : []));
   await Promise.all(running.map((a) => a.finished.catch(() => {})));
 }
 
 /**
- * Fly the header of the new page in, on the arc that continuum() started.
- * The same as adding .fk-continuum-in by hand, but it waits for the end.
+ * Continuum, second half: the header of the new page starts where the
+ * continuum() item was, at the size of the item, and moves and grows into
+ * place. Call it right after the new page mounts. With no continuum() in
+ * the last 2 seconds, the header slides in from the left instead.
  *
  * @param {Element | null | undefined} el the header of the new page
- * @returns {Promise<void>}
+ * @returns {Promise<void>} resolves when the header is in place
  */
 export async function continuumIn(el) {
   if (!el || typeof document === 'undefined') return;
-  if (el instanceof HTMLElement && getComputedStyle(el).display === 'inline') el.style.display = 'inline-block';
+  const from = flight && performance.now() - flight.at < 2000 ? flight : null;
+  flight = null;
+  if (el instanceof HTMLElement) {
+    if (getComputedStyle(el).display === 'inline') el.style.display = 'inline-block';
+    if (from) {
+      // Measure the resting place: no enter animation may move the box.
+      el.style.animation = 'none';
+      const r = el.getBoundingClientRect();
+      el.style.animation = '';
+      const size = parseFloat(getComputedStyle(el).fontSize) || from.fontSize;
+      el.style.setProperty('--fk-continuum-dx', `${(from.left - r.left).toFixed(1)}px`);
+      el.style.setProperty('--fk-continuum-dy', `${(from.top - r.top).toFixed(1)}px`);
+      el.style.setProperty('--fk-continuum-scale', (from.fontSize / size).toFixed(4));
+      el.style.setProperty('--fk-continuum-from-opacity', '1');
+    }
+  }
   el.classList.add('fk-continuum-in');
   const running = typeof el.getAnimations === 'function' ? el.getAnimations() : [];
   await Promise.all(running.map((a) => a.finished.catch(() => {})));

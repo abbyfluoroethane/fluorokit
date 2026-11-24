@@ -260,42 +260,30 @@ a.fk-tile:hover {
   animation-delay: calc(var(--i, 0) * var(--fk-exit-stagger));
 }
 
-/* ---- continuum: the tapped item carries you to the next page ----
-   The rest of the page leaves first, then the tapped item flies out, down
-   and to the right. On the new page, the header flies in from up and to
-   the left, so the two moves read as one arc. --fk-enter-dir -1 runs the
-   arc backwards, for the way back. continuum() in fluorokit/motion makes
-   the rest of the page leave and flies the item out. Put .fk-continuum-in
-   on the header of the new page, or call continuumIn(). */
-@keyframes fk-continuum-out {
-  to {
-    opacity: 0;
-    transform: translate(
-      calc(var(--fk-continuum-x) * var(--fk-enter-dir, 1)),
-      calc(var(--fk-continuum-y) * var(--fk-enter-dir, 1))
-    );
-  }
-}
+/* ---- continuum: the tapped item becomes the next header ----
+   The rest of the page leaves, and the tapped item stays. On the new page,
+   the header starts where the item was, at the size of the item, and
+   moves and grows into place. continuum() in fluorokit/motion makes the
+   rest of the page leave and records where the item was. continuumIn()
+   reads that record and sets the start:
+     --fk-continuum-dx, --fk-continuum-dy  the item, from the header (px)
+     --fk-continuum-scale                  the item font size / the header font size
+   With .fk-continuum-in alone (no record), the header slides in from
+   --fk-continuum-offset to the left and fades in. */
 @keyframes fk-continuum-in {
   from {
-    opacity: 0;
+    opacity: var(--fk-continuum-from-opacity, 0);
     transform: translate(
-      calc(var(--fk-continuum-x) * var(--fk-enter-dir, 1) * -1),
-      calc(var(--fk-continuum-y) * var(--fk-enter-dir, 1) * -1)
-    );
+        var(--fk-continuum-dx, calc(var(--fk-continuum-offset) * var(--fk-enter-dir, 1) * -1)),
+        var(--fk-continuum-dy, 0px)
+      )
+      scale(var(--fk-continuum-scale, 1));
   }
-}
-.fk-continuum-out,
-:is(.fk-enter-children > .fk-continuum-out, .fk-enter-children > * > .fk-continuum-out) {
-  animation: fk-continuum-out var(--fk-continuum-duration) var(--fk-ease-exit) forwards;
-  /* --fk-continuum-wait: the stagger steps of the rest of the page, so the
-     item flies after the last of them starts. continuum() sets it. */
-  animation-delay: calc(var(--fk-continuum-delay) + var(--fk-continuum-wait, 0) * var(--fk-exit-stagger));
-  pointer-events: none;
 }
 .fk-continuum-in,
 :is(.fk-enter-children > .fk-continuum-in, .fk-enter-children > * > .fk-continuum-in) {
-  animation: fk-continuum-in var(--fk-enter-duration) var(--fk-ease-metro) backwards;
+  transform-origin: left top;
+  animation: fk-continuum-in var(--fk-continuum-duration) var(--fk-ease-metro) backwards;
   animation-delay: 0s;
 }
 
@@ -426,14 +414,12 @@ a.fk-tile:hover {
   .fk-exit,
   .fk-turnstile-out,
   .fk-turnstile-in,
-  .fk-continuum-out,
   .fk-continuum-in,
-  :is(.fk-enter-children > *, .fk-enter-children > * > *):is(.fk-exit, .fk-turnstile-out, .fk-continuum-out, .fk-continuum-in) {
+  :is(.fk-enter-children > *, .fk-enter-children > * > *):is(.fk-exit, .fk-turnstile-out, .fk-continuum-in) {
     animation: none;
   }
   .fk-exit,
-  .fk-turnstile-out,
-  .fk-continuum-out {
+  .fk-turnstile-out {
     opacity: 0;
   }
   .fk-tilt.fk-tilting,

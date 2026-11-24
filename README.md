@@ -195,22 +195,27 @@ bottom. `Pivot` does this for you: give it the page element as `leaving`.
 {/key}
 ```
 
-**Continuum.** The tapped item carries you to the next page. The rest of
-the page leaves, top to bottom, then the item flies out, down and to the
-right. On the next page, the header flies in from up and to the left, on
-the same arc:
+**Continuum.** The tapped item becomes the header of the next page. The
+rest of the page leaves, top to bottom, and the item stays. On the next
+page, the header starts where the item was, at the size of the item, and
+moves and grows into place:
 
 ```js
-import { continuum } from 'fluorokit/motion';
+import { continuum, continuumIn } from 'fluorokit/motion';
 
 await continuum(item.querySelector('.title'), { page: listEl, kind: 'slide' });
-open(item); // the new page puts .fk-continuum-in on its header
+open(item); // mount the next page
+continuumIn(nextPage.querySelector('h1'));
 ```
 
 "The rest of the page" is each sibling of the item, then each sibling of
-its parent, up to `page`. For the way back, set `--fk-enter-dir` to -1
-first, and the arc runs in reverse. `continuumIn(el)` adds
-`.fk-continuum-in` and waits for the end.
+its parent, up to `page`. For the way back, call `continuum()` on the
+header and `continuumIn()` on the list item. With `.fk-continuum-in` alone
+and no `continuum()` before it, the header slides in from the left.
+
+Make sure no ancestor of the new header has an animation that moves it,
+because the header then moves twice. `.fk-continuum-in` overrides
+`.fk-enter-children` on a direct child and on a grandchild only.
 
 **Tilt.** Put `.fk-tilt` on a tile or a button and call `attachTilt()` once.
 A pressed element tips toward the press point and sinks when the press is
