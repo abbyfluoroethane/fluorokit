@@ -8,6 +8,7 @@
 //   dist/base.css                  type classes, status, the Metro page-enter
 //   dist/tailwind.css              Tailwind 4 @theme mapping for shadcn projects
 //   dist/shiki/<name>-<scheme>.json  a Shiki syntax theme, when the theme has syntax colors
+//   dist/adobe/<name>-<mode>.ase   an Adobe swatch file of each mode (sRGB, in groups by role)
 //   dist/fonts/selawik.css         the Selawik font, for the zune theme
 //   dist/tools/                    the theme recipe and the CSS writer, as modules
 //   dist/enter.js                  setEnterDirection, for a direction-aware page-enter
@@ -19,6 +20,7 @@
 // sets cannot share one namespace.
 import { cpSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { REQUIRED, SHADCN, decls, shikiTheme, themeCss } from './theme-css.mjs';
+import { aseOf } from './ase.mjs';
 
 const root = new URL('../', import.meta.url);
 const read = (path) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -44,6 +46,7 @@ function validate(theme, file) {
 rmSync(new URL('dist/', root), { recursive: true, force: true });
 mkdirSync(new URL('dist/themes/', root), { recursive: true });
 mkdirSync(new URL('dist/shiki/', root), { recursive: true });
+mkdirSync(new URL('dist/adobe/', root), { recursive: true });
 
 const structure = read('tokens/structure.json');
 // The tokens, then the root-size presets (src/sizes.css), which do nothing
@@ -64,6 +67,9 @@ for (const file of themeFiles) {
   write(`dist/themes/${theme.name}.css`, themeCss(theme, false));
   write(`dist/themes/${theme.name}.shadcn.css`, themeCss(theme, true));
   write(`dist/themes/${theme.name}.scoped.css`, themeCss(theme, true, true));
+  for (const key of Object.keys(theme.modes)) {
+    writeFileSync(new URL(`dist/adobe/${theme.name}-${key}.ase`, root), aseOf(theme, key));
+  }
   for (const [key, mode] of Object.entries(theme.modes)) {
     if (!mode.syntax || key === theme.print) continue;
     write(`dist/shiki/${theme.name}-${mode.colorScheme}.json`, JSON.stringify(shikiTheme(theme, key), null, 2) + '\n');

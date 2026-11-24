@@ -50,6 +50,7 @@ npm run build
 | `dist/base.css` | Type classes, the energy bar, status, the pivot, `.fk-enter` |
 | `dist/tailwind.css` | Tailwind 4 `@theme` mapping for shadcn-svelte |
 | `dist/shiki/<name>-<scheme>.json` | A Shiki syntax theme for code blocks, for a theme that has syntax colors |
+| `dist/adobe/<name>-<mode>.ase` | An Adobe swatch file of each mode, for Illustrator, InDesign and Photoshop |
 | `dist/fonts/selawik.css` | The Selawik font, for the `zune` theme |
 | `dist/tools/` | The theme recipe (`fluoro.mjs`), the presets (`presets.mjs`) and the CSS writer (`theme-css.mjs`), as modules for the browser or Node |
 | `dist/enter.js` | `setEnterDirection`, for a direction-aware page-enter |
@@ -286,6 +287,18 @@ for example, with the mode's text color as the default and no background.
 A theme can have a `tiles` object. Each entry becomes `--fk-tile-<name>`, a
 tile fill that is the same in each mode. `tileText` becomes `--fk-tile-text`,
 the text color on a tile.
+
+## Print
+
+Each theme mode is also an Adobe swatch file: `dist/adobe/ink-teflon.ase`
+for example. Open it from the Swatches panel. The swatches are sRGB, in
+groups by role (surfaces, text, accents, status, charts, syntax, tiles).
+The printer's profile turns them into CMYK when you export.
+
+`tokens/print/business-card.json` is the type scale for a business card
+(US, 3.5 x 2 in): the web scale at 8 pt to the rem, with print limits.
+Nothing is smaller than 6 pt. Type of 9 pt and smaller prints in black
+only (K), because four inks cannot hold registration at that size.
 
 ## Add a theme
 

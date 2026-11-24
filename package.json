@@ -37,6 +37,7 @@
     "./fonts/*": "./dist/fonts/*",
     "./tools/*": "./dist/tools/*",
     "./shiki/*": "./dist/shiki/*",
+    "./adobe/*": "./dist/adobe/*",
     "./enter": {
       "types": "./dist/enter.d.ts",
       "default": "./dist/enter.js"
