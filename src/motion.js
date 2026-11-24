@@ -47,12 +47,16 @@ let flight = null;
  * The way back is the same call the other way round: continuum() on the
  * header, then continuumIn() on the list item.
  *
+ * For a site of separate pages, keep the returned position (in
+ * sessionStorage, for example) and give it to continuumIn() on the next
+ * page as `from`.
+ *
  * @param {Element | null | undefined} item the tapped element, or the part of it that moves (its title)
  * @param {{ page?: Element | null, kind?: 'slide' | 'turnstile' }} [options] `page`: the element that holds the page (default: the parent of the item). `kind`: how the rest leaves.
- * @returns {Promise<void>} resolves when the rest of the page is gone, or at once with reduced motion
+ * @returns {Promise<{ left: number, top: number, fontSize: number } | null>} where the item is (viewport px), when the rest of the page is gone, or at once with reduced motion
  */
 export async function continuum(item, { page, kind = 'slide' } = {}) {
-  if (!item || typeof document === 'undefined') return;
+  if (!item || typeof document === 'undefined') return null;
   const root = page && page.contains(item) ? page : item.parentElement;
   const rest = [];
   for (let node = item; node && node !== root && node.parentElement; node = node.parentElement) {
@@ -70,23 +74,27 @@ export async function continuum(item, { page, kind = 'slide' } = {}) {
     el.classList.add(cls);
   });
   const r = item.getBoundingClientRect();
-  flight = { left: r.left, top: r.top, fontSize: parseFloat(getComputedStyle(item).fontSize), at: performance.now() };
+  const at = { left: r.left, top: r.top, fontSize: parseFloat(getComputedStyle(item).fontSize) };
+  flight = { ...at, at: performance.now() };
   const running = rest.flatMap((el) => (typeof el.getAnimations === 'function' ? el.getAnimations() : []));
   await Promise.all(running.map((a) => a.finished.catch(() => {})));
+  return at;
 }
 
 /**
  * Continuum, second half: the header of the new page starts where the
  * continuum() item was, at the size of the item, and moves and grows into
  * place. Call it right after the new page mounts. With no continuum() in
- * the last 2 seconds, the header slides in from the left instead.
+ * the last 2 seconds and no `from`, the header slides in from the left
+ * instead.
  *
  * @param {Element | null | undefined} el the header of the new page
+ * @param {{ from?: { left: number, top: number, fontSize: number } | null }} [options] `from`: a position that continuum() returned, on this page or the one before
  * @returns {Promise<void>} resolves when the header is in place
  */
-export async function continuumIn(el) {
+export async function continuumIn(el, { from: given = null } = {}) {
   if (!el || typeof document === 'undefined') return;
-  const from = flight && performance.now() - flight.at < 2000 ? flight : null;
+  const from = given ?? (flight && performance.now() - flight.at < 2000 ? flight : null);
   flight = null;
   if (el instanceof HTMLElement) {
     if (getComputedStyle(el).display === 'inline') el.style.display = 'inline-block';
@@ -96,8 +104,10 @@ export async function continuumIn(el) {
       const r = el.getBoundingClientRect();
       el.style.animation = '';
       const size = parseFloat(getComputedStyle(el).fontSize) || from.fontSize;
-      el.style.setProperty('--fk-continuum-dx', `${(from.left - r.left).toFixed(1)}px`);
-      el.style.setProperty('--fk-continuum-dy', `${(from.top - r.top).toFixed(1)}px`);
+      // Under CSS zoom, one CSS px of transform is `zoom` viewport px.
+      const zoom = el.offsetWidth ? r.width / el.offsetWidth : 1;
+      el.style.setProperty('--fk-continuum-dx', `${((from.left - r.left) / zoom).toFixed(1)}px`);
+      el.style.setProperty('--fk-continuum-dy', `${((from.top - r.top) / zoom).toFixed(1)}px`);
       el.style.setProperty('--fk-continuum-scale', (from.fontSize / size).toFixed(4));
       el.style.setProperty('--fk-continuum-from-opacity', '1');
     }

@@ -213,6 +213,10 @@ its parent, up to `page`. For the way back, call `continuum()` on the
 header and `continuumIn()` on the list item. With `.fk-continuum-in` alone
 and no `continuum()` before it, the header slides in from the left.
 
+On a site of separate pages, `continuum()` returns where the item is.
+Keep it in `sessionStorage` and give it to `continuumIn(el, { from })` on
+the next page.
+
 Make sure no ancestor of the new header has an animation that moves it,
 because the header then moves twice. `.fk-continuum-in` overrides
 `.fk-enter-children` on a direct child and on a grandchild only.
