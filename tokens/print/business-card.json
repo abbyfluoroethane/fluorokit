@@ -2,7 +2,10 @@
   "name": "business-card",
   "description": "The fluorokit type scale for a printed business card (US, 3.5 x 2 in). The web scale in rem, at 8 pt to the rem: 1rem of body is 8 pt. Leading keeps the web ratio, except body, which is tighter for short lines. Tracking is in InDesign units (1/1000 em). Light weight only from 12 pt (1.5rem), as on the web. Nothing smaller than 6 pt.",
   "card": {
-    "trim": { "width": "3.5in", "height": "2in" },
+    "trim": {
+      "width": "3.5in",
+      "height": "2in"
+    },
     "bleed": "0.125in",
     "safe": "0.125in",
     "left-edge": "0.25in",
@@ -13,17 +16,93 @@
     "mono": "IBM Plex Mono"
   },
   "type": {
-    "hero": { "font": "sans", "weight": "Light", "size": "48pt", "leading": "44pt", "tracking": -30, "case": "lower", "use": "One word that bleeds off the trim, back of the card" },
-    "title": { "font": "sans", "weight": "Light", "size": "20pt", "leading": "21.5pt", "tracking": -20, "case": "lower", "use": "The name" },
-    "heading": { "font": "sans", "weight": "SemiBold", "size": "12pt", "leading": "16pt", "tracking": -10, "case": "as written" },
-    "subheading": { "font": "sans", "weight": "SemiBold", "size": "9pt", "leading": "12pt", "tracking": 0, "case": "as written", "use": "The role" },
-    "body": { "font": "sans", "weight": "Regular", "size": "8pt", "leading": "11pt", "tracking": 0, "case": "as written" },
-    "small": { "font": "sans", "weight": "Regular", "size": "7pt", "leading": "10pt", "tracking": 0, "case": "as written" },
-    "label": { "font": "sans", "weight": "SemiBold", "size": "6pt", "leading": "8pt", "tracking": 0, "case": "as written" },
-    "overline": { "font": "mono", "weight": "Medium", "size": "6pt", "leading": "8pt", "tracking": 80, "case": "upper", "use": "The label over a group: CONTACT, WEB" },
-    "data": { "font": "mono", "weight": "Medium", "size": "7pt", "leading": "10pt", "tracking": 0, "case": "as written", "features": ["tnum"], "use": "Email, phone, URL" }
+    "hero": {
+      "font": "sans",
+      "weight": "Light",
+      "size": "64pt",
+      "leading": "58pt",
+      "tracking": -30,
+      "case": "lower",
+      "use": "One word that bleeds off the trim, back of the card. 8rem: larger than the web hero, so the word runs past the right edge."
+    },
+    "title": {
+      "font": "sans",
+      "weight": "Light",
+      "size": "20pt",
+      "leading": "21.5pt",
+      "tracking": -20,
+      "case": "lower",
+      "use": "The name"
+    },
+    "heading": {
+      "font": "sans",
+      "weight": "SemiBold",
+      "size": "12pt",
+      "leading": "16pt",
+      "tracking": -10,
+      "case": "as written"
+    },
+    "subheading": {
+      "font": "sans",
+      "weight": "SemiBold",
+      "size": "9pt",
+      "leading": "12pt",
+      "tracking": 0,
+      "case": "as written",
+      "use": "The role"
+    },
+    "body": {
+      "font": "sans",
+      "weight": "Regular",
+      "size": "8pt",
+      "leading": "11pt",
+      "tracking": 0,
+      "case": "as written"
+    },
+    "small": {
+      "font": "sans",
+      "weight": "Regular",
+      "size": "7pt",
+      "leading": "10pt",
+      "tracking": 0,
+      "case": "as written"
+    },
+    "label": {
+      "font": "sans",
+      "weight": "SemiBold",
+      "size": "6pt",
+      "leading": "8pt",
+      "tracking": 0,
+      "case": "as written"
+    },
+    "overline": {
+      "font": "mono",
+      "weight": "Medium",
+      "size": "6pt",
+      "leading": "8pt",
+      "tracking": 80,
+      "case": "upper",
+      "use": "The label over a group: CONTACT, WEB"
+    },
+    "data": {
+      "font": "mono",
+      "weight": "Medium",
+      "size": "7pt",
+      "leading": "10pt",
+      "tracking": 0,
+      "case": "as written",
+      "features": [
+        "tnum"
+      ],
+      "use": "Email, phone, URL"
+    }
   },
-  "energy-bar": { "height": "3pt", "width": "1in", "from": "bar-start", "to": "accent" },
+  "energy-bar": {
+    "height": "3pt",
+    "width": "1in",
+    "from": "bar-start",
+    "to": "accent"
+  },
   "color": {
     "palette": "dist/adobe/ink-teflon.ase",
     "paper": "base, or plain white stock",
