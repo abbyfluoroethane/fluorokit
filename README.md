@@ -298,7 +298,11 @@ The printer's profile turns them into CMYK when you export.
 `tokens/print/business-card.json` is the type scale for a business card
 (US, 3.5 x 2 in): the web scale at 8 pt to the rem, with print limits.
 Nothing is smaller than 6 pt. Type of 9 pt and smaller prints in black
-only (K), because four inks cannot hold registration at that size.
+only (K), because four inks cannot hold registration at that size. Each
+level has one case: lowercase for hero, title and heading, sentence case
+for subheading, body, small and label, all caps for the overline. Data
+stays as written. Title case is not used. The file gives the source of
+each rule in the WP7 guide and the Zune book.
 
 ## Add a theme
 

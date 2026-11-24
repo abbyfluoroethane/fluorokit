@@ -23,7 +23,8 @@
       "leading": "58pt",
       "tracking": -30,
       "case": "lower",
-      "use": "One word that bleeds off the trim, back of the card. 8rem: larger than the web hero, so the word runs past the right edge."
+      "use": "One word that bleeds off the trim, back of the card. 8rem: larger than the web hero, so the word runs past the right edge.",
+      "case-source": "WP7 p.194: lowercase for page titles. Zune p.26: Segoe Light lowercase for sub-headlines and UI."
     },
     "title": {
       "font": "sans",
@@ -32,7 +33,8 @@
       "leading": "21.5pt",
       "tracking": -20,
       "case": "lower",
-      "use": "The name"
+      "use": "The name",
+      "case-source": "WP7 p.194: lowercase for page titles. A name keeps its own case only if it has one."
     },
     "heading": {
       "font": "sans",
@@ -40,7 +42,8 @@
       "size": "12pt",
       "leading": "16pt",
       "tracking": -10,
-      "case": "as written"
+      "case": "lower",
+      "case-source": "WP7 p.194: lowercase for list titles and list group titles."
     },
     "subheading": {
       "font": "sans",
@@ -48,8 +51,9 @@
       "size": "9pt",
       "leading": "12pt",
       "tracking": 0,
-      "case": "as written",
-      "use": "The role"
+      "case": "sentence",
+      "use": "The role",
+      "case-source": "WP7 p.194: sentence caps for status and explanatory text."
     },
     "body": {
       "font": "sans",
@@ -57,7 +61,8 @@
       "size": "8pt",
       "leading": "11pt",
       "tracking": 0,
-      "case": "as written"
+      "case": "sentence",
+      "case-source": "Zune p.26: regular upper and lowercase for body copy."
     },
     "small": {
       "font": "sans",
@@ -65,7 +70,8 @@
       "size": "7pt",
       "leading": "10pt",
       "tracking": 0,
-      "case": "as written"
+      "case": "sentence",
+      "case-source": "As body."
     },
     "label": {
       "font": "sans",
@@ -73,7 +79,8 @@
       "size": "6pt",
       "leading": "8pt",
       "tracking": 0,
-      "case": "as written"
+      "case": "sentence",
+      "case-source": "WP7 p.194: sentence caps for labels."
     },
     "overline": {
       "font": "mono",
@@ -82,7 +89,8 @@
       "leading": "8pt",
       "tracking": 80,
       "case": "upper",
-      "use": "The label over a group: CONTACT, WEB"
+      "use": "The label over a group: CONTACT, WEB",
+      "case-source": "WP7 p.194: all caps for application titles. Zune p.26: regular uppercase for titles. Set in the font case, not with a style."
     },
     "data": {
       "font": "mono",
@@ -94,7 +102,8 @@
       "features": [
         "tnum"
       ],
-      "use": "Email, phone, URL"
+      "use": "Email, phone, URL",
+      "case-source": "An email or a URL stays as written. A date or a time is all caps (WP7 p.194: all caps for dates, times, AM and PM)."
     }
   },
   "energy-bar": {
@@ -108,5 +117,12 @@
     "paper": "base, or plain white stock",
     "text": "Type of 9 pt and smaller prints in 100% black (K only), not in the text color: four inks cannot hold registration on 6-8 pt type. The text color is for 12 pt and up.",
     "accent": "Decoration only, as on the web: the energy bar and rules. No type in it."
+  },
+  "case-rules": {
+    "lower": "every letter lowercase, typed that way, never set by a style",
+    "sentence": "a capital on the first word and on proper nouns only",
+    "upper": "every letter a capital",
+    "title case": "not used. Zune p.28: do not mix upper and lowercase words in a sentence.",
+    "mixed": "one case for each line. Zune p.28: do not jumble upper and lowercase letters in a word, and do not mix colors or fonts in a word."
   }
 }
